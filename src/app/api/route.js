@@ -2,10 +2,16 @@ import admin from "firebase-admin";
 
 // Inisialisasi Firebase Admin SDK
 if (!admin.apps.length) {
+  const privateKey = process.env.FIREBASE_PRIVATE_KEY;
+
+  if (!privateKey) {
+    throw new Error("FIREBASE_PRIVATE_KEY tidak ditemukan");
+  }
+
   const serviceAccount = {
     projectId: process.env.FIREBASE_PROJECT_ID,
     clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
-    privateKey: process.env.FIREBASE_PRIVATE_KEY.replace(/\\n/g, "\n"), // Mengganti \n dengan baris baru
+    privateKey: privateKey.replace(/\\n/g, "\n"), // Mengganti \n dengan baris baru
   };
 
   admin.initializeApp({
