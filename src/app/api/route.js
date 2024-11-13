@@ -55,8 +55,24 @@ export async function POST(req) {
   try {
     // Subscribe perangkat ke topik
     const response = await admin.messaging().subscribeToTopic([token], topic);
+
+    // Mengirim pesan kepada perangkat yang sudah subscribe ke topik
+    const message = {
+      notification: {
+        title: "Berhasil Subscribe!",
+        body: "Anda berhasil mensubscribe ke topik: " + topic,
+      },
+      topic: topic, // Mengirim pesan ke topik
+    };
+
+    // Kirim pesan ke perangkat yang terdaftar di topik
+    await admin.messaging().send(message);
+
     return new Response(
-      JSON.stringify({ message: "Berhasil subscribe ke topik", response }),
+      JSON.stringify({
+        message: "Berhasil subscribe ke topik dan mengirim pesan",
+        response,
+      }),
       {
         status: 200,
         headers: { "Content-Type": "application/json" },
