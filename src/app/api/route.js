@@ -19,12 +19,35 @@ if (!admin.apps.length) {
   });
 }
 
+// Fungsi untuk menambahkan CORS headers
+function handleCors(req, res) {
+  res.setHeader("Access-Control-Allow-Credentials", true);
+  res.setHeader("Access-Control-Allow-Origin", "*"); // Atur origin sesuai kebutuhan
+  res.setHeader("Access-Control-Allow-Methods", "GET,OPTIONS,POST");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
+
+  // Tangani preflight request OPTIONS
+  if (req.method === "OPTIONS") {
+    return new Response(null, { status: 204 });
+  }
+}
+
 export async function POST(req) {
+  // Tambahkan CORS ke dalam response
+  handleCors(req, {
+    setHeader: (header, value) => (req.headers[header] = value),
+  });
+
+  // Lanjutkan ke logika jika bukan preflight request (OPTIONS)
+  if (req.method === "OPTIONS") {
+    return new Response(null, { status: 204 });
+  }
+
   const { token, topic } = await req.json(); // Ambil token dan topik dari body request
 
   if (!token || !topic) {
     return new Response(
-      JSON.stringify({ message: "Token dan topic harus disediakan" }),
+      JSON.stringify({ message: "Token dan topik harus disediakan" }),
       { status: 400 }
     );
   }
