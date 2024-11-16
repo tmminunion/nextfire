@@ -4,7 +4,7 @@ export async function GET(
   request,
  { params}, 
 ) {
-  const id = (await params).id // 'a', 'b', or 'c'
+  const id = (await params).id;
 
   try {
     // Ambil parameter slug dari URL
