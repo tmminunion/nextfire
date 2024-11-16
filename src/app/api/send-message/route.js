@@ -23,7 +23,7 @@ async function verifyIdToken(idToken) {
   try {
     const decodedToken = await admin.auth().verifyIdToken(idToken);
     return decodedToken;
-  } catch (error) {
+  } catch {
     throw new Error("Token tidak valid atau telah kadaluarsa.");
   }
 }
