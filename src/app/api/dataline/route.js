@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export async function GET(req) {
+export async function GET() {
   try {
     // Panggil API eksternal
     const response = await axios.get("https://api.bungtemin.net/FamgetAbsensi/absensiline/0");
